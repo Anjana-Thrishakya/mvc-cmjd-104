@@ -14,7 +14,7 @@ public class CustomerDto {
     private String title;
     private String name;
     private String dob;
-    private Double salasy;
+    private Double salary;
     private String address;
     private String city;
     private String province;
@@ -77,17 +77,17 @@ public class CustomerDto {
     }
 
     /**
-     * @return the salasy
+     * @return the salary
      */
-    public Double getSalasy() {
-        return salasy;
+    public Double getSalary() {
+        return salary;
     }
 
     /**
-     * @param salasy the salasy to set
+     * @param salasy the salary to set
      */
-    public void setSalasy(Double salasy) {
-        this.salasy = salasy;
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 
     /**
@@ -148,8 +148,6 @@ public class CustomerDto {
 
     @Override
     public String toString() {
-        return "CustomerDto{" + "custId=" + custId + ", title=" + title + ", name=" + name + ", dob=" + dob + ", salasy=" + salasy + ", address=" + address + ", city=" + city + ", province=" + province + ", zip=" + zip + '}';
+        return "CustomerDto{" + "custId=" + custId + ", title=" + title + ", name=" + name + ", dob=" + dob + ", salary=" + salary + ", address=" + address + ", city=" + city + ", province=" + province + ", zip=" + zip + '}';
     }
-    
-    
 }
