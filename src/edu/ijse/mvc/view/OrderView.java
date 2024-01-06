@@ -4,7 +4,9 @@
  */
 package edu.ijse.mvc.view;
 
+import edu.ijse.mvc.controller.CustomerController;
 import edu.ijse.mvc.controller.ItemController;
+import edu.ijse.mvc.dto.CustomerDto;
 import edu.ijse.mvc.dto.ItemDto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,12 +19,14 @@ import javax.swing.JOptionPane;
 public class OrderView extends javax.swing.JFrame {
     
     private ItemController itemController;
+    private CustomerController customerController;
 
     /**
      * Creates new form OrderView
      */
     public OrderView() {
         itemController = new ItemController();
+        customerController = new CustomerController();
         initComponents();
     }
 
@@ -59,6 +63,11 @@ public class OrderView extends javax.swing.JFrame {
 
         btnSearchCustomer.setText("Search");
         btnSearchCustomer.setToolTipText("");
+        btnSearchCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchCustomerActionPerformed(evt);
+            }
+        });
 
         lblItemId.setText("Item Id");
 
@@ -133,6 +142,10 @@ public class OrderView extends javax.swing.JFrame {
         searchItem();
     }//GEN-LAST:event_btnSearchItemActionPerformed
 
+    private void btnSearchCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchCustomerActionPerformed
+        searchCustomer();
+    }//GEN-LAST:event_btnSearchCustomerActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -193,6 +206,23 @@ public class OrderView extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(OrderView.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void searchCustomer(){
+        try {
+            String custId = txtCustId.getText();
+            CustomerDto customerDto = customerController.searchCustomer(custId);
+            
+            if(customerDto != null){
+                lblCustData.setText(customerDto.getTitle() + " " + customerDto.getName());
+            } else {
+                JOptionPane.showMessageDialog(this, "Cuustomer Not Found");
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(OrderView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
 }
