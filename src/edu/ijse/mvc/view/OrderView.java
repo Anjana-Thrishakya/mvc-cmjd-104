@@ -6,10 +6,14 @@ package edu.ijse.mvc.view;
 
 import edu.ijse.mvc.controller.CustomerController;
 import edu.ijse.mvc.controller.ItemController;
+import edu.ijse.mvc.controller.OrderController;
 import edu.ijse.mvc.dto.CustomerDto;
 import edu.ijse.mvc.dto.ItemDto;
 import edu.ijse.mvc.dto.OrderDetailDto;
+import edu.ijse.mvc.dto.OrderDto;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -23,6 +27,8 @@ public class OrderView extends javax.swing.JFrame {
 
     private ItemController itemController;
     private CustomerController customerController;
+    private OrderController orderController;
+    
     private ArrayList<OrderDetailDto> orderDetailDtos;
 
     /**
@@ -31,6 +37,7 @@ public class OrderView extends javax.swing.JFrame {
     public OrderView() {
         itemController = new ItemController();
         customerController = new CustomerController();
+        orderController = new OrderController();
         orderDetailDtos = new ArrayList<>();
         initComponents();
         loadTable();
@@ -63,6 +70,7 @@ public class OrderView extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblItem = new javax.swing.JTable();
+        btnPlaceOrder = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,6 +124,13 @@ public class OrderView extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblItem);
 
+        btnPlaceOrder.setText("Place Order");
+        btnPlaceOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlaceOrderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -158,7 +173,10 @@ public class OrderView extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnAdd)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(lblItemData, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE))))
+                            .addComponent(lblItemData, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnPlaceOrder)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -190,7 +208,9 @@ public class OrderView extends javax.swing.JFrame {
                     .addComponent(btnAdd))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 58, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnPlaceOrder)
+                .addGap(0, 23, Short.MAX_VALUE))
         );
 
         pack();
@@ -207,6 +227,10 @@ public class OrderView extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         addToTable();
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
+       placeOrder();
+    }//GEN-LAST:event_btnPlaceOrderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,6 +269,7 @@ public class OrderView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnPlaceOrder;
     private javax.swing.JButton btnSearchCustomer;
     private javax.swing.JButton btnSearchItem;
     private javax.swing.JLabel iblCustId;
@@ -326,6 +351,24 @@ public class OrderView extends javax.swing.JFrame {
         txtQty.setText("");
         txtDiscount.setText("");
         lblItemData.setText("");
+    }
+    
+    private void placeOrder(){
+        try {
+            OrderDto orderDto = new OrderDto();
+            orderDto.setOrderId(txtOrderId.getText());
+            orderDto.setCustId( txtCustId.getText());
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String date = sdf.format(new Date());
+            orderDto.setOrderDate(date);
+            
+            String resp = orderController.placeOrder(orderDto, orderDetailDtos);
+            JOptionPane.showMessageDialog(this, resp);
+        } catch (Exception ex) {
+            Logger.getLogger(OrderView.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
 }
