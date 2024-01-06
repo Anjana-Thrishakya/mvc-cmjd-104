@@ -9,6 +9,7 @@ import edu.ijse.mvc.dto.CustomerDto;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -312,9 +313,25 @@ public class CustomerView extends javax.swing.JFrame {
         try {
             String result = customerController.saveCustomer(dto);
             System.out.println(result);
+            JOptionPane.showMessageDialog(this, result);
+            loadCustomers();
+            clear();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
+    }
+    
+    private void clear(){
+        txtId.setText("");
+        txtName.setText("");
+        txtTitle.setText("");
+        txtDob.setText("");
+        txtSalary.setText("");
+        txtAddress.setText("");
+        txtCity.setText("");
+        txtProvince.setText("");
+        txtZip.setText("");
     }
     
     private void loadCustomers(){
@@ -341,6 +358,7 @@ public class CustomerView extends javax.swing.JFrame {
             
         } catch (Exception ex) {
             Logger.getLogger(CustomerView.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
         
         
